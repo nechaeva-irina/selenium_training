@@ -7,8 +7,9 @@ from selenium.webdriver.common.by import By
 
 @pytest.fixture
 def driver(request):
-    wd = webdriver.Firefox(firefox_binary="/Applications/FirefoxNightly.app/Contents/MacOS/firefox-bin")
+    wd = webdriver.Chrome()
     request.addfinalizer(wd.quit)
+    wd.implicitly_wait(5)
     return wd
 
 
@@ -18,4 +19,5 @@ def test_login(driver):
     driver.find_element_by_name("password").send_keys("admin")
     driver.find_element_by_name("login").click()
     WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'sidebar')))
+
 

@@ -4,7 +4,7 @@ from selenium import webdriver
 
 @pytest.fixture
 def driver(request):
-    wd = webdriver.Firefox(capabilities={"marionette": True})
+    wd = webdriver.Firefox()
     print(wd.capabilities)
     request.addfinalizer(wd.quit)
     return wd
