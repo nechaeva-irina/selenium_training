@@ -30,9 +30,17 @@ def test_cart_13(driver):
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'span[class="quantity"]'), new_number))
         driver.find_element_by_css_selector('i[class="fa fa-home"]').click()
     driver.find_element_by_partial_link_text('Checkout').click()
-    while len(driver.find_elements_by_css_selector('[name="remove_cart_item"]')) > 0:
-        WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[name="remove_cart_item"]')))
+    # stop changing items in preview if number of items > 1
+    try:
+        driver.find_element_by_css_selector('li[class="shortcut"]').click()
+    except Exception:
+        pass
+    # delete items from the cart
+    number_of_products_in_cart = driver.find_elements_by_css_selector('tr td[class="item"]')
+    for i in range(0, len(number_of_products_in_cart)):
+        table = driver.find_element_by_id('box-checkout-summary')
         driver.find_element_by_css_selector('[name="remove_cart_item"]').click()
+        WebDriverWait(driver, 3).until(EC.staleness_of(table))
 
 
 def isElementPresent(driver, locator):
