@@ -30,9 +30,13 @@ def test_logs_17(driver):
     for row in rows:
         link_in_row = row.find_element_by_css_selector('td a')
         list.append(link_in_row.get_attribute('href'))
-    print(list)
 
+    logs_list = []
     for i in list:
         driver.get(i)
+
         for l in driver.get_log("browser"):
             print(l)
+            logs_list.append(l)
+
+    assert len(logs_list) == 0
