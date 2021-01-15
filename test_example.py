@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
+from datetime import date
 
 class MyListener(AbstractEventListener):
     def before_find(self, by, value, driver):
@@ -12,6 +13,9 @@ class MyListener(AbstractEventListener):
         print(by, value, "found")
     def on_exception(self, exception, driver):
         print(exception)
+        today = str(date.today())
+        driver.get_screenshot_as_file('screen' + today + '.png')
+        print()
 
 
 @pytest.fixture
@@ -24,5 +28,5 @@ def driver(request):
 
 def test_example(driver):
     driver.get("http://www.google.com/")
-    driver.find_element_by_name('q').send_keys('webdriver', Keys.ENTER)
+    driver.find_element_by_name('_q').send_keys('webdriver', Keys.ENTER)
     WebDriverWait(driver,10).until(EC.title_is('webdriver - Поиск в Google'))
