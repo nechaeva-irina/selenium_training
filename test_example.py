@@ -5,6 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
 from datetime import date
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 class MyListener(AbstractEventListener):
     def before_find(self, by, value, driver):
@@ -20,7 +21,7 @@ class MyListener(AbstractEventListener):
 
 @pytest.fixture
 def driver(request):
-    wd = EventFiringWebDriver(webdriver.Chrome(), MyListener())
+    wd = webdriver.Chrome()
     print(wd.capabilities)
     request.addfinalizer(wd.quit)
     return wd
@@ -28,5 +29,7 @@ def driver(request):
 
 def test_example(driver):
     driver.get("http://www.google.com/")
-    driver.find_element_by_name('_q').send_keys('webdriver', Keys.ENTER)
+    driver.find_element_by_name('q').send_keys('webdriver', Keys.ENTER)
     WebDriverWait(driver,10).until(EC.title_is('webdriver - Поиск в Google'))
+    for l in driver.get_log("browser"):
+        print(l)
