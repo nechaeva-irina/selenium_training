@@ -29,6 +29,7 @@ def test_cart_13(driver):
         WebDriverWait(driver, 3).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'span[class="quantity"]'), new_number))
         driver.find_element_by_css_selector('i[class="fa fa-home"]').click()
+
     driver.find_element_by_partial_link_text('Checkout').click()
     # stop changing items in preview if number of items > 1
     try:
